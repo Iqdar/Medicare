@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
 import Navbar from './Navbar'
+import Admin from './Admin/Admin'
+import RegisteredClient from './Registered/RegisteredClient'
+import NonregisteredClient from './NonRegistered/NonregisteredClient';
 import Web3 from 'web3';
 import Medicare from '../abis/Medicare.json'
 
@@ -43,6 +46,8 @@ class App extends Component {
     }
     if(this.state.account === this.state.admin){
       const totalClients = await medicare.methods.totalClients().call()
+      const username = 'Admin'
+      this.setState({username})
       for (var i = 1; i <= totalClients; i++) {
         const client = await medicare.methods.clients(i).call()
         this.setState({
@@ -56,17 +61,28 @@ class App extends Component {
       }
     }
     else if(this.state.account!=''){
-      const clientAddress = await medicare.methods.clientAddresses(this.state.account).call()
+      const clientAddresses = await medicare.methods.clientAddresses(this.state.account).call()
       const userId = clientAddresses.id;
-      const client = await medicare.methods.clients(userId).call()
-      const username = client.name;
-      this.setState({username})
-      const totalTransaction = client.totalTransaction
-      for(var i = 1; i <= totalTransaction; i++){
-        const order = await medicare.methods.orders(userId,i).call()
-        this.setState({orders: [...this.state.orders, order]})
+      console.log(userId)
+      if(userId!=0){
+        console.log(1)
+        const client = await medicare.methods.clients(userId).call()
+        const username = client.name;
+        this.setState({username})
+        const totalTransaction = client.totalTransaction
+        for(var i = 1; i <= totalTransaction; i++){
+          const order = await medicare.methods.orders(userId,i).call()
+          this.setState({orders: [...this.state.orders, order]})
+        }
+      }
+      
+      else{
+        const username = 'Non Registered'
+        this.setState({username: username})
+        console.log(this.state.username)
       }
     }
+    
     this.setState({loading:false})
   }
   else{
@@ -132,11 +148,32 @@ class App extends Component {
 
 
   render() {
-    return (
-      <div>
-        <Navbar account={this.state.account} />
-      </div>
-    );
+    if(this.state.loading==true){
+      return(
+        <div id="loader" className="text-center mt-5"><p>Loading...</p></div>
+      )
+    }
+    else if(this.state.account === this.state.admin){
+      return(
+        <div>
+          <Admin account={this.state.account}  username={this.state.username}/>
+        </div>
+      )
+    }
+    else if(this.state.username==='Non Registered'){
+      return(
+        <div>
+          <NonregisteredClient account={this.state.account}  username={this.state.username}/>
+        </div>
+      )
+    }
+    else{
+      return (
+        <div>
+          <RegisteredClient account={this.state.account}  username={this.state.username}/>
+        </div>
+      );
+    }
   }
 }
 

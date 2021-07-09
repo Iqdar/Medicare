@@ -6,9 +6,9 @@ contract Medicare{
     address public admin;
     IERC20 public dai;
 
-    uint totalOrders = 0;
-    uint totalMedicines = 0;
-    uint totalClients = 0;
+    uint public totalOrders = 0;
+    uint public totalMedicines = 0;
+    uint public totalClients = 0;
 
     struct Medicine{
         uint id;
