@@ -12,16 +12,15 @@ export const SidebarData = [
     icon: <GiIcons.GiMedicines />,
     iconClosed: <RiIcons.RiArrowDownSFill />,
     iconOpened: <RiIcons.RiArrowUpSFill />,
-
     subNav: [
       {
-        title: 'NewMedicine',
+        title: 'New Medicine',
         path: '/medicines/new',
         icon: <AiIcons.AiFillPlusCircle />
       },
       {
-        title: 'ViewMedicines',
-        path: '/medicines/view',
+        title: 'View Medicines',
+        path: '/medicines',
         icon: <MdIcons.MdViewList />
       }
     ]

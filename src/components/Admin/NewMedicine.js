@@ -1,11 +1,29 @@
-import React from 'react'
+import '../App.css';
+import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
 
-const NewMedicine = () => {
-    return(
-        <div>
-            <h1>New Medicine</h1>
-        </div>
-    )
+class NewMedicine extends Component{
+
+  componentWillMount () {
+      
+    const {newMedicine, match: {params}} = this.props;
+    this.setState({newMedicine})    
 }
 
-export default NewMedicine
+  constructor(props){
+  super(props)
+  this.state = {
+      newMedicine(){}
+  }
+}
+
+render() {
+    console.log(this.props.newMedicines)
+  return (
+      <div>
+          <h1>New Medicines</h1>
+      </div>
+  );
+}
+}
+export default NewMedicine;

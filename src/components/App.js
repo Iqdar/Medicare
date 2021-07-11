@@ -156,7 +156,7 @@ class App extends Component {
     else if(this.state.account === this.state.admin){
       return(
         <div>
-          <Admin account={this.state.account}  username={this.state.username}/>
+          <Admin account={this.state.account}  username={this.state.username} medicines={this.state.medicines} clients={this.state.clients} orders={this.state.orders} addMedicine={this.addMedicine} updateMedicine={this.updateMedicine} updateOrder={this.updateOrder}/>
         </div>
       )
     }
