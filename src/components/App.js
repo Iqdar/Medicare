@@ -92,28 +92,36 @@ class App extends Component {
 
   addMedicine = (name, formulaName, description, price, stock) => {
     this.setState({ loading: true })
-    this.state.medicare.methods.addMedicine(name, formulaName, description, price, stock).send({ from: this.state.account }).on('transactionHash', (hash) => {
+    this.state.medicare.methods.addMedicine(name, formulaName, description, price, stock).send({ from: this.state.account })
+    .once('receipt', (receipt) => {
+      console.log('Success')
       this.setState({ loading: false })
     })
   }
 
   addClient = (name, deliverAddress) => {
     this.setState({ loading: true })
-    this.state.medicare.methods.addClient(name, deliverAddress).send({ from: this.state.account }).on('transactionHash', (hash) => {
+    this.state.medicare.methods.addClient(name, deliverAddress).send({ from: this.state.account })
+    .once('receipt', (receipt) => {
+      console.log('Success')
       this.setState({ loading: false })
     })
   }
 
   addOrder = (medicineId, quantity) => {
     this.setState({ loading: true })
-    this.state.medicare.methods.addOrder(medicineId, quantity).send({ from: this.state.account }).on('transactionHash', (hash) => {
+    this.state.medicare.methods.addOrder(medicineId, quantity).send({ from: this.state.account })
+    .once('receipt', (receipt) => {
+      console.log('Success')
       this.setState({ loading: false })
     })
   }
   
   updateMedicine = (id, name, formulaName, description, price, stock) => {
     this.setState({ loading: true })
-    this.state.medicare.methods.updateMedicine(id, name, formulaName, description, price, stock).send({ from: this.state.account }).on('transactionHash', (hash) => {
+    this.state.medicare.methods.updateMedicine(id, name, formulaName, description, price, stock).send({ from: this.state.account })
+    .once('receipt', (receipt) => {
+      console.log('Success')
       this.setState({ loading: false })
     })
   }
@@ -143,7 +151,13 @@ class App extends Component {
       clients:[],
       orders:[],
       loading:true
-    }
+    }    
+    this.addMedicine = this.addMedicine.bind(this);
+    this.addClient = this.addClient.bind(this);
+    this.addOrder = this.addOrder.bind(this);
+    this.updateMedicine = this.updateMedicine.bind(this);
+    this.updateClient = this.updateClient.bind(this);
+    this.updateOrder = this.updateOrder.bind(this);
   }
 
 
@@ -163,14 +177,14 @@ class App extends Component {
     else if(this.state.username==='Non Registered'){
       return(
         <div>
-          <NonregisteredClient account={this.state.account}  username={this.state.username}/>
+          <NonregisteredClient account={this.state.account}  username={this.state.username}  medicines={this.state.medicines} addClient={this.addClient}/>
         </div>
       )
     }
     else{
       return (
         <div>
-          <RegisteredClient account={this.state.account}  username={this.state.username}/>
+          <RegisteredClient account={this.state.account}  username={this.state.username} medicines={this.state.medicines} orders={this.state.orders} addOrder={this.addOrder} updateClient={this.updateClient}/>
         </div>
       );
     }

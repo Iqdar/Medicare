@@ -21,6 +21,7 @@ class Medicines extends Component{
 
 render() {
     console.log(this.props.updateMedicine)
+    console.log(this.props.medicines)
   return (
       <div>
           <h1>Medicines</h1>

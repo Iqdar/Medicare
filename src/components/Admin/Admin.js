@@ -44,17 +44,18 @@ class Admin extends Component{
 }
 
 render() {
+  console.log(this.props.addMedicine)
   return (
     <Router>
       <Sidebar  account={this.props.account}  username={this.props.username}/>
       <Switch>
         <Route path='/medicines/new'
          render={(props) => (
-          <NewMedicine {...props} newMedicines={this.props.updateMedicine} />
+          <NewMedicine {...props} addMedicine={this.props.addMedicine} />
         )} />
         <Route path='/medicines' 
         render={(props) => (
-          <Medicines {...props} medicines = {this.props.medicines} updateMedicine={this.props.updateMedicine} />
+          <Medicines {...props} medicines = {this.props.medicines} updateMedicine={this.props.updateMedicine}  addMedicines={this.state.addMedicine}  />
         )}/>
         <Route path='/clients' 
         render={(props) => (
