@@ -121,7 +121,7 @@ contract Medicare{
 		require((bytes(_name).length > 0) && (bytes(_formulaName).length > 0) && (bytes(_description).length > 0));
         Medicine memory _medicine = medicines[_id];
         uint _medicineId = _medicine.id;
-        if((compareStrings(_medicine.name, _name)==false)||(compareStrings(_medicine.formulaName,_formulaName) == false)||(compareStrings(_medicine.description,_description) == false)||(_medicine.price!=_price)||(_medicine.remainingStock!=_stock)){
+        if((compareStrings(_medicine.name, _name)==false)||(compareStrings(_medicine.formulaName,_formulaName) == false)||(compareStrings(_medicine.description,_description) == false)||(_medicine.price != _price)||(_medicine.remainingStock != _stock)){
             medicines[_medicineId] = Medicine(_medicineId,_name,_formulaName,_description,_price,_stock);
             emit NewMedicine(_medicineId,_name,_formulaName,_description,_price,_stock);
         }

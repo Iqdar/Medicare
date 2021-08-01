@@ -3,33 +3,36 @@ import React, {Component} from 'react';
 import {Link, Redirect, useHistory} from 'react-router-dom';
 
 
-class NewMedicine extends Component{
+class UpdateMedicine extends Component{
   
   componentWillMount () {
-      
-    const {_addMedicine, match: {params}} = this.props;
-    this.setState({addMedicine:_addMedicine})    
-    console.log(_addMedicine)
     
+    const {_data} = this.props.match.params
+    this.setState({data:_data})
+    const {_updateMedicine}=this.props.location.function;
+    const {_medicine} = this.props.location.data;
+    this.setState({updateMedicine:_updateMedicine})
+    this.setState({medicine:_medicine})
     
 }
 
   constructor(props){
   super(props)
   this.state = {
-      addMedicine(){}
+      data: null,
+      medicine:null,
+      updateMedicine(){}
   }
 }
 
 render() {
-    console.log(this.props.Medicines)
-    console.log(this.props.addMedicine)
+    console.log(this.state.updateMedicine)
   return (
 
     
     <div>
     <p>&nbsp;</p>
-    <h2>New Medicine</h2>
+    <h2>Update Medicine</h2>
     <p>&nbsp;</p>
         <form className="form-horizontal" onSubmit={(event) => {
             event.preventDefault()
@@ -38,7 +41,7 @@ render() {
             const description = this._description.value
             const price = this._price.value
             const stock = this._stock.value
-            this.props.addMedicine(name,formulaName,description,window.web3.utils.hexToNumberString(price),window.web3.utils.hexToNumberString(stock))
+            this.state.updateMedicine(window.web3.utils.hexToNumberString(this.state.medicine.id),name,formulaName,description,window.web3.utils.hexToNumberString(price),window.web3.utils.hexToNumberString(stock))
             window.location.href = "/medicines"
         }}>
         <div className="row">
@@ -52,7 +55,7 @@ render() {
                     ref={(input) => { this._name = input }}
                     className="form-control"
                     placeholder="Name"
-                    defaultValue={''}
+                    defaultValue={this.state.medicine.name}
                     required />
                 </div>
             </div>
@@ -66,7 +69,7 @@ render() {
                     type="text"
                     ref={(input) => { this._formulaName = input }}
                     className="form-control"
-                    defaultValue={''}                                
+                    defaultValue={this.state.medicine.formulaName}                                
                     placeholder="Formula Name"
                     required />
                 </div>
@@ -85,7 +88,7 @@ render() {
                     ref={(input) => { this._description = input }}
                     className="form-control"
                     placeholder="Descriptionn"
-                    defaultValue={''}
+                    defaultValue={this.state.medicine.description}
                     required />
                 </div>
             </div>
@@ -102,7 +105,7 @@ render() {
                     ref={(input) => { this._price = input }}
                     className="form-control"
                     placeholder="Price"                                
-                    defaultValue={''}
+                    defaultValue={this.state.medicine.price}
                     required />
                 </div>
             </div>
@@ -121,7 +124,7 @@ render() {
                     type="number"
                     ref={(input) => { this._stock = input }}
                     className="form-control"
-                    defaultValue={''}
+                    defaultValue={this.state.medicine.remainingStock}
                     placeholder="Stock"
                     required />
                 </div>
@@ -130,7 +133,7 @@ render() {
             <div className="col-md-6">
                 <div className="form-group">        
                     <div className="col-sm-6 ">
-                    <button type="submit" className="btn btn-primary" >Add</button>
+                    <button type="submit" className="btn btn-primary" >Update</button>
                     </div>
                 </div>
             </div>
@@ -141,4 +144,4 @@ render() {
   );
 }
 }
-export default NewMedicine;
+export default UpdateMedicine;

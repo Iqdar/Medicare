@@ -6,6 +6,7 @@ import RegisteredClient from './Registered/RegisteredClient'
 import NonregisteredClient from './NonRegistered/NonregisteredClient';
 import Web3 from 'web3';
 import Medicare from '../abis/Medicare.json'
+import { Redirect } from 'react-router-dom'
 
 class App extends Component {
   async componentWillMount() {
@@ -128,14 +129,18 @@ class App extends Component {
 
   updateClient = (name, deliverAddress) => {
     this.setState({ loading: true })
-    this.state.medicare.methods.updateClient(name, deliverAddress).send({ from: this.state.account }).on('transactionHash', (hash) => {
+    this.state.medicare.methods.updateClient(name, deliverAddress).send({ from: this.state.account }).send({ from: this.state.account })
+    .once('receipt', (receipt) => {
+      console.log('Success')
       this.setState({ loading: false })
     })
   }
 
   updateOrder = (userId, orderIndex) => {
     this.setState({ loading: true })
-    this.state.medicare.methods.updateOrder(userId, orderIndex).send({ from: this.state.account }).on('transactionHash', (hash) => {
+    this.state.medicare.methods.updateOrder(userId, orderIndex).send({ from: this.state.account }).send({ from: this.state.account })
+    .once('receipt', (receipt) => {
+      console.log('Success')
       this.setState({ loading: false })
     })
   }
