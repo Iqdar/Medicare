@@ -39,6 +39,8 @@ class App extends Component {
     const admin = await medicare.methods.admin().call()
     this.setState({admin})
     const totalMedicines = await medicare.methods.totalMedicines().call()
+    const bal = await medicare.methods.balance(this.state.account).call()
+    console.log((bal).toString())
     for (var i = 1; i <= totalMedicines; i++) {
       const medicine = await medicare.methods.medicines(i).call()
       this.setState({

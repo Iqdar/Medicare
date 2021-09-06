@@ -39,6 +39,7 @@ contract Medicare{
         uint clientTransactionId;
         uint quantity;
         uint orderDate;
+        uint bill;
         string status;
     }
 
@@ -71,6 +72,7 @@ contract Medicare{
         uint clientTransactionId,
         uint quantity,
         uint orderDate,
+        uint bill,
         string status
         );
 
@@ -108,10 +110,11 @@ contract Medicare{
         uint _orderIndex = _clients.totalTransaction+1;
         clients[_userId] = Clients(_userId, msg.sender,_clients.name, _clients.deliverAddress, _clients.totalTransaction+1);
         emit NewClient(_userId, msg.sender,_clients.name, _clients.deliverAddress, _clients.totalTransaction+1);
-        totalOrders++;
-        orders[_userId][_orderIndex] = Orders(totalOrders, _medicineId,_userId,_orderIndex,_quantity,block.timestamp,'Pending');
-        emit NewOrder(totalOrders, _medicineId,_userId,_orderIndex,_quantity,block.timestamp,'Pending');
+        totalOrders++;                
         Medicine memory _medicine = medicines[_medicineId];
+        uint _bill = _medicine.price * _quantity;
+        orders[_userId][_orderIndex] = Orders(totalOrders, _medicineId,_userId,_orderIndex,_quantity,block.timestamp,_bill,'Pending');
+        emit NewOrder(totalOrders, _medicineId,_userId,_orderIndex,_quantity,block.timestamp, _bill,'Pending');
         uint _updatedStock = _medicine.remainingStock - _quantity;
         medicines[_medicineId] = Medicine(_medicine.id, _medicine.name, _medicine.formulaName, _medicine.description, _medicine.price, _updatedStock);
         emit NewMedicine(_medicine.id, _medicine.name, _medicine.formulaName, _medicine.description, _medicine.price, _updatedStock);
@@ -140,12 +143,17 @@ contract Medicare{
     
     function updateOrder(uint _userId, uint _orderIndex)public{
         Orders memory _order = orders[_userId][_orderIndex];
-        orders[_userId][_orderIndex] = Orders(_order.orderId,_order.productId,_order.clientId,_order.clientTransactionId,_order.quantity,_order.orderDate,'Delivered');
-        emit NewOrder(_order.orderId,_order.productId,_order.clientId,_order.clientTransactionId,_order.quantity,_order.orderDate,'Delivered');
+        orders[_userId][_orderIndex] = Orders(_order.orderId,_order.productId,_order.clientId,_order.clientTransactionId,_order.quantity,_order.orderDate,_order.bill,'Delivered');
+        emit NewOrder(_order.orderId,_order.productId,_order.clientId,_order.clientTransactionId,_order.quantity,_order.orderDate,_order.bill,'Delivered');
     }
 
     function pay(uint amount)external{
         dai.transferFrom(msg.sender, admin, amount);
+    }
+
+    function balance(address _account) public view returns(uint){
+        uint bal = dai.balanceOf(_account)/10**18;
+        return bal;
     }
     
 	function compareStrings (string memory a, string memory b) public view returns (bool) {

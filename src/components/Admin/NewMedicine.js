@@ -39,7 +39,7 @@ render() {
             const price = this._price.value
             const stock = this._stock.value
             this.props.addMedicine(name,formulaName,description,window.web3.utils.hexToNumberString(price),window.web3.utils.hexToNumberString(stock))
-            window.location.href = "/medicines"
+            window.location.href='/medicines'
         }}>
         <div className="row">
             <div className="col-md-6">

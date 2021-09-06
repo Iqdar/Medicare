@@ -6,14 +6,17 @@ import {Link, Redirect, useHistory} from 'react-router-dom';
 class UpdateMedicine extends Component{
   
   componentWillMount () {
-    
+    if(this.props.location.function){
     const {_data} = this.props.match.params
     this.setState({data:_data})
+    console.log(this.props.location.function)
     const {_updateMedicine}=this.props.location.function;
     const {_medicine} = this.props.location.data;
     this.setState({updateMedicine:_updateMedicine})
     this.setState({medicine:_medicine})
-    
+    }
+    else
+        window.location.href='/medicines'
 }
 
   constructor(props){
@@ -42,7 +45,6 @@ render() {
             const price = this._price.value
             const stock = this._stock.value
             this.state.updateMedicine(window.web3.utils.hexToNumberString(this.state.medicine.id),name,formulaName,description,window.web3.utils.hexToNumberString(price),window.web3.utils.hexToNumberString(stock))
-            window.location.href = "/medicines"
         }}>
         <div className="row">
             <div className="col-md-6">
