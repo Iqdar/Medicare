@@ -3,24 +3,31 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {MDBDataTable} from 'mdbreact';
 
-class Orders extends Component{
+class OrdersAdmin extends Component{
 
   componentWillMount () {
-      
-    const {orders, clients, medicines, updateOrder, match: {params}} = this.props;
-    this.setState({orders})
-    this.setState({clients})
+    if(this.props.location.data){
+    const {ordersAdmin, medicines, match: {params}} = this.props;
+    const {_client} = this.props.location.data;
+    const order = [];
+    for (let x=0; x<_client.totalTransaction; x++){
+        order[x] = ordersAdmin[_client.id-1, x];
+    }
+    this.setState({orders: order})
+    this.setState({client: _client})
     this.setState({medicines})
-    this.setState({updateOrder})    
+    }
+    else{
+        window.location.href='/clients'
+    }
 }
 
   constructor(props){
   super(props)
   this.state = {
       orders:[],
-      clients:[],
-      medicines:[],
-      updateOrder(){}
+      client:null,
+      medicines:[]
   }
 }
 
@@ -63,7 +70,7 @@ render() {const data = {
       width: 150
     },
     {
-      label: 'Update',
+      label: 'Status',
       field: 'status',
       sort: 'asc',
       width: 150
@@ -74,16 +81,12 @@ render() {const data = {
       return(
     {
       id: window.web3.utils.hexToNumberString(order.orderId),
-      name: this.state.clients[window.web3.utils.hexToNumberString(order.clientId)-1].name,
+      name: this.state.client.name,
       medicineId: window.web3.utils.hexToNumberString(order.productId),
       quantity: window.web3.utils.hexToNumberString(order.quantity),
       date: Date(window.web3.utils.hexToNumberString(order.orderDate)*1000),
       bill: window.web3.utils.hexToNumberString(order.bill),
-      status:<button className="btn btn-primary" onClick={
-        (event) => {
-          event.preventDefault()
-          this.state.updateOrder(window.web3.utils.hexToNumberString(order.clientId), window.web3.utils.hexToNumberString(order.clientTransactionId))          }
-      } >Delivered</button>,
+      status:order.status,
     })
     }
   )]
@@ -102,4 +105,4 @@ return (
 
 }
 }
-export default Orders;
+export default OrdersAdmin;

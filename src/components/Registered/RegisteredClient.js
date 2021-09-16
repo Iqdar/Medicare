@@ -9,33 +9,6 @@ import NewOrder from './NewOrder';
 
 class RegisteredClient extends Component{
 
-  componentWillUnmount () {
-    const {_account} = this.props.location.account;
-    this.setState({account:_account})
-    const {_username} = this.props.location.username;
-    this.setState({username:_username})
-    const {_medicines} = this.props.location.medicines;
-    this.setState({medicines:_medicines})
-    const {_orders} = this.props.location.orders;
-    this.setState({orders:_orders})
-    const {_addOrder}=this.props.location.function
-    this.setState({addOrder:_addOrder})
-    const {_updateClient}=this.props.location.function
-    this.setState({updateClient:_updateClient})
-  }
-
-  constructor(props){
-  super(props)
-  this.state = {
-      account:'',
-      username: '',
-      medicines:[],
-      orders:[],
-      addOrder(){},
-      updateClient(){}
-  }
-}
-
 render() {
 
   return (

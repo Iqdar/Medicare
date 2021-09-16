@@ -7,26 +7,6 @@ import Register from './Register';
 
 class NonregisteredClient extends Component{
 
-  componentWillUnmount () {
-    const {_account} = this.props.location.account;
-    this.setState({account:_account})
-    const {_username} = this.props.location.username;
-    this.setState({username:_username})
-    const {_medicines} = this.props.location.medicines;
-    this.setState({medicines:_medicines})
-    const {_addClient}=this.props.location.function
-    this.setState({addClient:_addClient})
-}
-
-  constructor(props){
-  super(props)
-  this.state = {
-      account:'',
-      username: '',
-      medicines:[],
-      addClient(){},
-  }
-}
 
 render() {
 

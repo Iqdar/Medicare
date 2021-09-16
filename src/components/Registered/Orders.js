@@ -20,7 +20,8 @@ class Orders extends Component{
   }
 }
 
-render() {const data = {
+render() {
+  const data = {
   columns: [
     {
       label: 'ID',

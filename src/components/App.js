@@ -51,6 +51,7 @@ class App extends Component {
       const totalClients = await medicare.methods.totalClients().call()
       const username = 'Admin'
       this.setState({username})
+      let orders = [,]
       for (var i = 1; i <= totalClients; i++) {
         const client = await medicare.methods.clients(i).call()
         this.setState({
@@ -58,17 +59,20 @@ class App extends Component {
         })
         const orderIndex = client.totalTransaction;
         for(var j = 1; j <= orderIndex; j++){
-          const order = await medicare.methods.orders(i,j).call()
-          this.setState({orders: [...this.state.orders, order]})
+          orders[i-1,j-1] = await medicare.methods.orders(i,j).call()
+          if (orders[i-1,j-1].status==='Pending'){
+            this.setState({orders: [...this.state.orders, orders[i-1,j-1]]})
+          }
         }
       }
+      this.setState({ordersAdmin: orders});
+      console.log(this.state.orders)
     }
     else if(this.state.account!=''){
       const clientAddresses = await medicare.methods.clientAddresses(this.state.account).call()
       const userId = clientAddresses.id;
       console.log(userId)
       if(userId!=0){
-        console.log(1)
         const client = await medicare.methods.clients(userId).call()
         const username = client.name;
         this.setState({username})
@@ -131,7 +135,7 @@ class App extends Component {
 
   updateClient = (name, deliverAddress) => {
     this.setState({ loading: true })
-    this.state.medicare.methods.updateClient(name, deliverAddress).send({ from: this.state.account }).send({ from: this.state.account })
+    this.state.medicare.methods.updateClient(name, deliverAddress).send({ from: this.state.account })
     .once('receipt', (receipt) => {
       console.log('Success')
       this.setState({ loading: false })
@@ -140,7 +144,7 @@ class App extends Component {
 
   updateOrder = (userId, orderIndex) => {
     this.setState({ loading: true })
-    this.state.medicare.methods.updateOrder(userId, orderIndex).send({ from: this.state.account }).send({ from: this.state.account })
+    this.state.medicare.methods.updateOrder(userId, orderIndex).send({ from: this.state.account })
     .once('receipt', (receipt) => {
       console.log('Success')
       this.setState({ loading: false })
@@ -157,6 +161,7 @@ class App extends Component {
       medicines:[],
       clients:[],
       orders:[],
+      ordersAdmin:[,],
       loading:true
     }    
     this.addMedicine = this.addMedicine.bind(this);
@@ -177,7 +182,7 @@ class App extends Component {
     else if(this.state.account === this.state.admin){
       return(
         <div>
-          <Admin account={this.state.account}  username={this.state.username} medicines={this.state.medicines} clients={this.state.clients} orders={this.state.orders} addMedicine={this.addMedicine} updateMedicine={this.updateMedicine} updateOrder={this.updateOrder}/>
+          <Admin account={this.state.account}  username={this.state.username} medicines={this.state.medicines} clients={this.state.clients} orders={this.state.orders} ordersAdmin={this.state.ordersAdmin} addMedicine={this.addMedicine} updateMedicine={this.updateMedicine} updateOrder={this.updateOrder}/>
         </div>
       )
     }
